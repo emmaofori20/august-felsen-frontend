@@ -1,0 +1,147 @@
+<section class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-4">
+    <h1 class="text-4xl font-bold mb-8 text-center text-gray-900">Suppliers Connect</h1>
+    <p class="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">Connect with construction suppliers, browse product catalogs, and request quotes for your projects.</p>
+    
+    <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- RFQ Form -->
+      <div class="lg:col-span-1 mb-8 lg:mb-0">
+        <div class="bg-gray-50 rounded-lg p-6 shadow sticky top-24">
+          <h2 class="text-xl font-semibold mb-4 text-gray-900">Request for Quote</h2>
+          <form [formGroup]="rfqForm" (ngSubmit)="submitRFQ()" class="space-y-4">
+            <div>
+              <label class="block mb-1 font-medium text-gray-700" for="product">Product/Service</label>
+              <input 
+                formControlName="product" 
+                class="w-full px-4 py-2 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400" 
+                type="text" 
+                id="product" 
+                placeholder="e.g., Concrete, Steel, Tools">
+              <div *ngIf="rfqForm.get('product')?.invalid && rfqForm.get('product')?.touched" class="text-red-500 text-sm mt-1">Product is required.</div>
+            </div>
+            <div>
+              <label class="block mb-1 font-medium text-gray-700" for="quantity">Quantity</label>
+              <input 
+                formControlName="quantity" 
+                class="w-full px-4 py-2 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400" 
+                type="text" 
+                id="quantity" 
+                placeholder="e.g., 100 tons, 50 units">
+            </div>
+            <div>
+              <label class="block mb-1 font-medium text-gray-700" for="specifications">Specifications</label>
+              <textarea 
+                formControlName="specifications" 
+                class="w-full px-4 py-2 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400" 
+                id="specifications" 
+                rows="3" 
+                placeholder="Technical specifications, quality requirements..."></textarea>
+            </div>
+            <div>
+              <label class="block mb-1 font-medium text-gray-700" for="delivery">Delivery Location</label>
+              <input 
+                formControlName="delivery" 
+                class="w-full px-4 py-2 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400" 
+                type="text" 
+                id="delivery" 
+                placeholder="Project site address">
+            </div>
+            <div>
+              <label class="block mb-1 font-medium text-gray-700" for="timeline">Timeline</label>
+              <input 
+                formControlName="timeline" 
+                class="w-full px-4 py-2 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400" 
+                type="text" 
+                id="timeline" 
+                placeholder="e.g., Within 2 weeks">
+            </div>
+            <div>
+              <label class="block mb-1 font-medium text-gray-700" for="contact">Contact Info</label>
+              <input 
+                formControlName="contact" 
+                class="w-full px-4 py-2 rounded bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400" 
+                type="text" 
+                id="contact" 
+                placeholder="Name, phone, email">
+            </div>
+            <button 
+              type="submit" 
+              [disabled]="rfqForm.invalid" 
+              class="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 rounded transition disabled:opacity-50">
+              Submit RFQ
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Suppliers List -->
+      <div class="lg:col-span-2 w-full">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+          <h2 class="text-2xl font-semibold text-gray-900">Featured Suppliers</h2>
+          <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <select 
+              [formControl]="filterCategory" 
+              class="px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400">
+              <option value="">All Categories</option>
+              <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+            </select>
+            <input 
+              [formControl]="searchControl" 
+              placeholder="Search suppliers..." 
+              class="px-4 py-2 rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div *ngFor="let supplier of filteredSuppliers" class="bg-white rounded-lg p-6 shadow border border-gray-200">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 gap-2">
+              <div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">{{ supplier.name }}</h3>
+                <div class="flex gap-2 mb-2">
+                  <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded">{{ supplier.category }}</span>
+                  <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">{{ supplier.rating }}★</span>
+                </div>
+              </div>
+              <div class="text-left sm:text-right">
+                <div class="text-sm text-gray-500">{{ supplier.location }}</div>
+                <div class="text-sm text-gray-500">{{ supplier.yearsInBusiness }} years</div>
+              </div>
+            </div>
+            
+            <p class="text-gray-600 mb-4">{{ supplier.description }}</p>
+            
+            <div class="mb-4">
+              <h4 class="font-medium text-gray-900 mb-2">Specialties:</h4>
+              <div class="flex flex-wrap gap-1">
+                <span *ngFor="let specialty of supplier.specialties" class="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded">{{ specialty }}</span>
+              </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+              <div class="text-sm text-gray-500">
+                <span>{{ supplier.productsCount }} products</span>
+              </div>
+              <div class="flex gap-2 w-full sm:w-auto">
+                <button 
+                  (click)="viewCatalog(supplier)" 
+                  class="flex-1 sm:flex-none bg-gray-500 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded transition">
+                  View Catalog
+                </button>
+                <button 
+                  (click)="contactSupplier(supplier)" 
+                  class="flex-1 sm:flex-none bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded transition">
+                  Contact
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="filteredSuppliers.length === 0" class="text-center py-12">
+          <div class="text-gray-400 text-lg">No suppliers found.</div>
+          <p class="text-gray-500 mt-2">Try adjusting your search criteria.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> 

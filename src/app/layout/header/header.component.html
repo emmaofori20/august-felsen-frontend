@@ -1,0 +1,55 @@
+<header class="sticky top-0 z-50 bg-primary text-white shadow">
+  <nav class="container mx-auto flex items-center justify-between py-4 px-4 md:px-6">
+    <span class="font-bold text-2xl tracking-tight text-secondary" routerLink="/">August Felsen</span>
+    <!-- Hamburger button (mobile) -->
+    <button (click)="toggleMenu()" class="md:hidden focus:outline-none" aria-label="Toggle navigation">
+      <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+    <!-- Navigation links -->
+    <ul class="hidden md:flex gap-8 font-medium items-center">
+      <li><a routerLink="/" routerLinkActive="text-secondary/80" [routerLinkActiveOptions]="{ exact: true }" class="hover:text-secondary/80 transition">Home</a></li>
+      <li><a routerLink="/about" routerLinkActive="text-secondary/80" class="hover:text-secondary/80 transition">About</a></li>
+      <li><a routerLink="/services" routerLinkActive="text-secondary/80" class="hover:text-secondary/80 transition">Services</a></li>
+      <li><a routerLink="/professionals" routerLinkActive="text-secondary/80" class="hover:text-secondary/80 transition">Professionals</a></li>
+      <li><a routerLink="/artisans" routerLinkActive="text-secondary/80" class="hover:text-secondary/80 transition">Artisans & Foremen</a></li>
+      <li><a routerLink="/suppliers" routerLinkActive="text-secondary/80" class="hover:text-secondary/80 transition">Suppliers</a></li>
+      <li><a routerLink="/job-bidding" routerLinkActive="text-secondary/80" class="hover:text-secondary/80 transition">Job Bidding</a></li>
+      <li><a routerLink="/library" routerLinkActive="text-secondary/80" class="hover:text-secondary/80 transition">Library</a></li>
+      <li><a routerLink="/contact" routerLinkActive="text-secondary/80" class="hover:text-secondary/80 transition">Contact</a></li>
+      <ng-container *ngIf="!isLoggedIn">
+        <li><a routerLink="/auth/login" class="hover:text-secondary/80 transition">Login</a></li>
+        <li><a routerLink="/auth/register" class="hover:text-secondary/80 transition">Register</a></li>
+      </ng-container>
+      <ng-container *ngIf="isLoggedIn">
+        <li class="flex items-center gap-2">
+          <span class="text-secondary font-semibold">{{ user?.firstName || user?.email }}</span>
+          <button (click)="logout()" class="ml-2 bg-secondary hover:bg-secondary/80 text-white px-3 py-1 rounded transition">Logout</button>
+        </li>
+      </ng-container>
+    </ul>
+    <!-- Mobile menu -->
+    <ul *ngIf="menuOpen" class="absolute top-full left-0 w-full bg-primary text-white flex flex-col gap-4 font-medium py-6 px-4 shadow md:hidden animate-fade-in z-50">
+      <li><a routerLink="/" routerLinkActive="text-secondary/80" [routerLinkActiveOptions]="{ exact: true }" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Home</a></li>
+      <li><a routerLink="/about" routerLinkActive="text-secondary/80" (click)="toggleMenu()" class="hover:text-secondary/80 transition">About</a></li>
+      <li><a routerLink="/services" routerLinkActive="text-secondary/80" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Services</a></li>
+      <li><a routerLink="/professionals" routerLinkActive="text-secondary/80" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Professionals</a></li>
+      <li><a routerLink="/artisans" routerLinkActive="text-secondary/80" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Artisans & Foremen</a></li>
+      <li><a routerLink="/suppliers" routerLinkActive="text-secondary/80" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Suppliers</a></li>
+      <li><a routerLink="/job-bidding" routerLinkActive="text-secondary/80" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Job Bidding</a></li>
+      <li><a routerLink="/library" routerLinkActive="text-secondary/80" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Library</a></li>
+      <li><a routerLink="/contact" routerLinkActive="text-secondary/80" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Contact</a></li>
+      <ng-container *ngIf="!isLoggedIn">
+        <li><a routerLink="/auth/login" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Login</a></li>
+        <li><a routerLink="/auth/register" (click)="toggleMenu()" class="hover:text-secondary/80 transition">Register</a></li>
+      </ng-container>
+      <ng-container *ngIf="isLoggedIn">
+        <li class="flex items-center gap-2">
+          <span class="text-secondary font-semibold">{{ user?.firstName || user?.email }}</span>
+          <button (click)="logout()" class="ml-2 bg-secondary hover:bg-secondary/80 text-white px-3 py-1 rounded transition">Logout</button>
+        </li>
+      </ng-container>
+    </ul>
+  </nav>
+</header> 

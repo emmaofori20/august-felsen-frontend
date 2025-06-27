@@ -1,0 +1,34 @@
+<div class="relative mb-6">
+  <input
+    [type]="inputType"
+    [value]="value"
+    (input)="onInput($event)"
+    [placeholder]="placeholder"
+    class="block w-full px-4 py-3 text-base bg-white border border-gray-300 rounded appearance-none focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400 peer"
+    [ngClass]="{'pr-12': showToggle && type === 'password'}"
+    (focus)="onFocus()"
+    (blur)="onBlur()"
+  />
+  <label
+    class="absolute left-4 top-3 text-gray-500 duration-200 transform -translate-y-1/2 scale-100 origin-left pointer-events-none bg-white px-1 transition-all
+      peer-focus:-top-2 peer-focus:text-xs peer-focus:text-orange-500 peer-focus:scale-90
+      peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:scale-100
+      "
+    [class.-top-2]="isFocused || value"
+    [class.text-xs]="isFocused || value"
+    [class.text-orange-500]="isFocused || value"
+    [class.scale-90]="isFocused || value"
+  >
+    {{ label }}
+  </label>
+  <button *ngIf="showToggle && type === 'password'" type="button" (click)="toggleVisibility()"
+    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-500 focus:outline-none">
+    <svg *ngIf="hide" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+    </svg>
+    <svg *ngIf="!hide" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.477 0-8.268-2.943-9.542-7a9.956 9.956 0 012.042-3.368m3.087-2.742A9.956 9.956 0 0112 5c4.477 0 8.268 2.943 9.542 7a9.956 9.956 0 01-4.421 5.255M15 12a3 3 0 11-6 0 3 3 0 016 0zm-6.364 6.364L6 18m12-12l-1.414 1.414" />
+    </svg>
+  </button>
+</div> 
