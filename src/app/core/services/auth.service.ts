@@ -1,53 +1,44 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
-import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiUrl = 'https://localhost:7217/api/auth'; // Adjust if needed
+  private apiUrl = environment.apiUrl + '/Auth';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient) {}
 
-  login(data: { email: string; password: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
-      tap(res => {
-        if (res && res.token) {
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('user', JSON.stringify(res.user));
-        }
-      })
-    );
+  login(credentials: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, credentials);
   }
 
-  register(data: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, data).pipe(
-      tap(res => {
-        if (res && res.token) {
-          localStorage.setItem('token', res.token);
-          localStorage.setItem('user', JSON.stringify(res.user));
-        }
-      })
-    );
+  register(data: { email: string; password: string; confirmPassword: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, data);
   }
 
-  logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.router.navigate(['/auth/login']);
-    window.location.reload();
+  setToken(token: string) {
+    localStorage.setItem('token', token);
   }
 
-  get token() {
+  getToken(): string | null {
     return localStorage.getItem('token');
   }
 
-  get isLoggedIn() {
-    return !!this.token;
+  clearToken() {
+    localStorage.removeItem('token');
   }
 
-  get currentUser() {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
+  refresh(token: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/refresh`, { token });
+  }
+
+  logout(): Observable<any> {
+    this.clearToken();
+    return this.http.post(`${this.apiUrl}/logout`, {});
+  }
+
+  get isLoggedIn(): boolean {
+    return !!this.getToken();
   }
 } 

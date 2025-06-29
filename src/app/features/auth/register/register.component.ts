@@ -52,7 +52,10 @@ export class RegisterComponent {
     this.loading = true;
     this.error = null;
     this.auth.register(this.registerForm.value).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: (response) => {
+        localStorage.setItem('token', response.token);
+        this.router.navigate(['/']);
+      },
       error: (err: any) => {
         this.error = err.error?.message || 'Registration failed';
         this.loading = false;
